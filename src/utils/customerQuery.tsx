@@ -1,0 +1,74 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getAllCustomer,
+  CreateNewCustomer as CreateNewCustomerApi,
+  GetCustomer,
+} from "./api";
+import { z } from "zod";
+import { toast } from "react-toastify";
+
+const serviceSchema = z.object({
+  id: z.string(),
+  keluhan: z.string(),
+  tindakan: z.string(),
+  serviceDate: z.string(),
+});
+
+const AddressSchema = z.object({
+  id: z.string(),
+  alamat: z.string(),
+  kategori: z.string(),
+  serviceList: z.array(serviceSchema).nullable(),
+});
+const CustomerSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  phoneNumber: z.string(),
+  createdAt: z.string(),
+  addressList: z.array(AddressSchema).nullable(),
+});
+
+const AllCustomerListSchema = z.array(CustomerSchema);
+
+export function GetAllCustomer() {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["allCustomer"],
+    queryFn: getAllCustomer,
+    retry: false,
+  });
+
+  const parseResult = AllCustomerListSchema.safeParse(data);
+
+  if (!parseResult.success)
+    return { data: null, isLoading: null, isError: true };
+  return { data: parseResult.data, isLoading, isError };
+}
+
+export function useCreateNewCustomer() {
+  const queryClient = useQueryClient();
+  const { mutate: createNewCustomer, isPending } = useMutation({
+    mutationFn: CreateNewCustomerApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["allCustomer"] });
+      toast("Customer added",{type:"success"})
+    },
+    onError:()=>{
+      toast("Failed add customer",{type:"error"})
+    }
+  });
+  return { createNewCustomer, isPending };
+}
+
+export function GetSingleUser(id:string){
+  
+  const {data,isLoading,isError}=useQuery({
+    queryKey:['singleCustomer'],
+    queryFn:()=>GetCustomer(id),
+    retry:false
+  })
+  const parseResult = CustomerSchema.safeParse(data)
+  if (!parseResult.success)
+    return { data: null, isLoading: null, isError: true };
+
+  return {data:parseResult,isLoading,isError}
+}
