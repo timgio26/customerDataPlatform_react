@@ -3,6 +3,7 @@ import {
   getAllCustomer,
   CreateNewCustomer as CreateNewCustomerApi,
   GetCustomer,
+  CreateNewAddress as CreateNewAddressApi,
 } from "./api";
 import { z } from "zod";
 import { toast } from "react-toastify";
@@ -71,4 +72,18 @@ export function GetSingleUser(id:string){
     return { data: null, isLoading: null, isError: true };
 
   return {data:parseResult,isLoading,isError}
+}
+
+export function useCreateNewAddress(){
+  const queryClient = useQueryClient()
+  const {mutate:CreateNewAddress,isPending} = useMutation({
+    mutationFn:CreateNewAddressApi,
+    onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["singleCustomer"]})
+    },
+    onError:()=>{
+      toast("Failed add address",{type:"error"})
+    }
+  })
+  return {CreateNewAddress,isPending}
 }
