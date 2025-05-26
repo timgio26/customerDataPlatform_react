@@ -30,3 +30,15 @@ export async function CreateNewAddress(data:NewAddressDto){
     const resp = await axios.post(`${beurl}/api/CDP/address`,data)
     return resp.data
 }
+
+type NewServiceDto = {
+  addressId: string;
+  keluhan: string;
+  tindakan: string;
+  hasil: string;
+};
+
+export async function CreateNewService(data:NewServiceDto){
+    const resp = await axios.post(`${beurl}/api/CDP/service`,data)
+    return resp.data
+}

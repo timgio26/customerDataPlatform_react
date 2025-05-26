@@ -16,21 +16,17 @@ const AddressPageSchema = z.object({
 export function Address() {
   const location = useLocation();
   const parseResult = AddressPageSchema.safeParse(location);
+
   if (!parseResult.success) return <ErrorBackToHome />;
 
   const { data, isLoading, isError } = GetSingleUser(
     parseResult.data.state.userId
   );
 
-  if (isError || (!data && !isLoading)) return <ErrorBackToHome />;
+  if (!isLoading&&isError ) return <ErrorBackToHome />;
 
   return (
     <>
-      {isLoading && (
-        <>
-          <span>loading</span>
-        </>
-      )}
       {data && (
         <>
           <div className="flex flex-col gap-1 mb-4">
@@ -49,7 +45,7 @@ export function Address() {
                 <div className="flex flex-col w-4/5 justify-between">
                 <div className="flex flex-col">
 
-                  <Link to={"/service-list"}>
+                  <Link to={"/service-list"} state={{serviceList:each.serviceList,customer:data.data.name,address:each.alamat}}>
                     <span className="font-semibold">{each.alamat}</span>
                   </Link>
                   <span className="font-light text-gray-700">
@@ -65,9 +61,9 @@ export function Address() {
               </div>
             ))}
           </div>
+          <NewAddressModalFormGroup customerId={data.data.id} />
         </>
       )}
-      <NewAddressModalFormGroup customerId={data.data.id} />
     </>
   );
 }

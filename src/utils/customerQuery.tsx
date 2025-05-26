@@ -4,14 +4,16 @@ import {
   CreateNewCustomer as CreateNewCustomerApi,
   GetCustomer,
   CreateNewAddress as CreateNewAddressApi,
+  CreateNewService as CreateNewServiceApi
 } from "./api";
 import { z } from "zod";
 import { toast } from "react-toastify";
 
-const serviceSchema = z.object({
+export const serviceSchema = z.object({
   id: z.string(),
   keluhan: z.string(),
   tindakan: z.string(),
+  hasil: z.string(),
   serviceDate: z.string(),
 });
 
@@ -86,4 +88,18 @@ export function useCreateNewAddress(){
     }
   })
   return {CreateNewAddress,isPending}
+}
+
+export function useCreateNewService(){
+  // const queryClient = useQueryClient()
+  const {mutate:CreateNewService,isPending} = useMutation({
+    mutationFn:CreateNewServiceApi,
+    // onSuccess() {
+    //   queryClient.invalidateQueries({queryKey:["singleCustomer"]})
+    // },
+    onError:()=>{
+      toast("Failed add service",{type:"error"})
+    }
+  })
+  return {CreateNewService,isPending}
 }
