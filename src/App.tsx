@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import logoSP from "./assets/android-chrome-192x192.png"
 function App() {
   const navigate = useNavigate()
+  const date = new Date
   return (
     <div className="h-dvh justify-between flex flex-col">
       <header className="px-5 py-2 shadow">
@@ -19,7 +20,11 @@ function App() {
       <div className="h-full overflow-y-scroll px-4 sm:px-10 py-5 bg-slate-50">
         <Outlet />
       </div>
-      <footer>footer</footer>
+      <footer className="flex justify-center">
+        <span>
+          {date.getFullYear()}
+          </span>
+          </footer>
       <ToastContainer/>
     </div>
   );
