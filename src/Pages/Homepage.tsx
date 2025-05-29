@@ -4,6 +4,7 @@ import { GetAllCustomer } from "../utils/customerQuery";
 import { useState } from "react";
 import { PopupModal } from "../Components/PopupModal";
 import { Link } from "react-router";
+import { ErrorBackToHome } from "../Components/ErrorBackToHome";
 
 type CustomerOnDelete = {
   id: string;
@@ -11,7 +12,6 @@ type CustomerOnDelete = {
 };
 
 export function Homepage() {
-  const beurl = import.meta.env.VITE_API_URL
   const { data, isLoading, isError } = GetAllCustomer();
   const [showDelPopup, setShowDelPopup] = useState<boolean>(false);
   const [userOnDelete, setUserOnDelete] = useState<CustomerOnDelete>();
@@ -19,8 +19,8 @@ export function Homepage() {
     console.log(id);
   }
 
-  console.log(isError, isLoading,beurl);
-
+  if(isLoading)return <div><span>Loading</span></div>
+  if(isError) return <ErrorBackToHome/>
   return (
     <div>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 shadow">
