@@ -5,7 +5,6 @@ FROM node:alpine AS builder
 WORKDIR /app
 
 # Set environment variables during the build process
-# ENV VITE_API_URL=https://localhost:8080
 
 
 # Copy package.json and install dependencies
@@ -15,6 +14,7 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+ENV VITE_API_URL=http://localhost:8081
 # Build the React app
 RUN npm run build
 
