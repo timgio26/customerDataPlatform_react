@@ -5,7 +5,7 @@ FROM node:alpine AS builder
 WORKDIR /app
 
 # Set environment variables during the build process
-ENV VITE_API_URL=https://localhost:8080
+# ENV VITE_API_URL=https://localhost:8080
 
 
 # Copy package.json and install dependencies
