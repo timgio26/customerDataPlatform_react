@@ -4,7 +4,7 @@ import axios from "axios";
 const beurl = "http://localhost:8081"
 
 export async function getAllCustomer() {
-    const resp = await axios.get(`${beurl}/api/CDP/customer`)
+    const resp = await axios.get(`http://localhost:8081/api/CDP/customer`)
     return resp.data
 }
 type NewCustomerDto = {
