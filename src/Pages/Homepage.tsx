@@ -19,6 +19,8 @@ export function Homepage() {
     console.log(id);
   }
 
+  console.log(import.meta.env.VITE_API_URL)
+
   if(isLoading)return <div><span>Loading</span></div>
   if(isError) return <ErrorBackToHome/>
   return (
