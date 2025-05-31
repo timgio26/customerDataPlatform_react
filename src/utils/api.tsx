@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// const beurl = import.meta.env.VITE_API_URL
-const beurl = "http://localhost:8081"
+
+const beurl = import.meta.env.VITE_API_URL
 
 export async function getAllCustomer() {
-    const resp = await axios.get(`http://localhost:8081/api/CDP/customer`)
+    const resp = await axios.get(`${beurl}/api/CDP/customer`)
     return resp.data
 }
 type NewCustomerDto = {
